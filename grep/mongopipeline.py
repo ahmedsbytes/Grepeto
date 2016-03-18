@@ -14,5 +14,5 @@ class MongoPipeline(object):
 
 
     def process_item(self, item, spider):
-        self.collection.insert_one(dict(item))
+        self.collection.update_one({'url': item['url']}, {'$set': dict(item)}, upsert=True)
         return item
