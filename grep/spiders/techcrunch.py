@@ -32,7 +32,7 @@ class ArstechnicaSpider(CrawlSpider):
     # # my own variables
     #######################
     xpaths = {
-        'title': '//header[@class="article-header page-title"]/h1[@itemprop="alpha tweet-title"]//text()',
+        'title': '//header[@class="article-header page-title"]/h1[@class="alpha tweet-title"]//text()',
         'image': '//div[@class="article-entry text"]/img/@src',
         'content': '//div[@class="article-entry text"]//text()',
         'time': '//time[@class="timestamp"]/@datatime'
