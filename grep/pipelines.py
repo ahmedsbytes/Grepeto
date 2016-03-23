@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-import datetime
 import time
+import dateutil.parser as dateparser
 from HTMLParser import HTMLParser
 
 
@@ -25,8 +25,9 @@ def strip_tags(html):
 
 class CleanerPipeline(object):
     def process_item(self, item, spider):
-        if item.time.isdigit():
-            item.time = time.mktime(datetime.datetime.strptime(item.time, "%d/%m/%Y").timetuple())
+        if not item['time'].isdigit():
+            dt = dateparser.parse(item['time'])
+            item['time'] = int(time.mktime(dt.timetuple()))
 
-        item.content = strip_tags(item.content)
+        item['content'] = strip_tags(item['content'])
         return item
