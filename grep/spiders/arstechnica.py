@@ -48,7 +48,7 @@ class ArstechnicaSpider(CrawlSpider):
             item['url'] = self.response.url
             item['title'] = self.getxPath(self.xpaths['title'])[0]
             item['image'] = self.getxPath(self.xpaths['image'])[0]
-            item['time'] = self.getxPath(self.xpaths['time'])[0]
+            #item['time'] = self.getxPath(self.xpaths['time'])[0]
             content = ''
             for singleContent in self.getxPath(self.xpaths['content']):
                 content += singleContent

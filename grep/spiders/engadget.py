@@ -25,7 +25,7 @@ class EngadgetSpider(CrawlSpider):
 
     xpaths = {
         'title': '//header/div/div/div/h1/text()',
-        'image': '//figure/img[@class="stretch-img"]/@src',
+        'image': '//*[@id="page_body"]/div/div/div[1]/div[1]/div/img',
         'content': '//div[@id="page_body"]//div',
         'time': '//p[@itemprop="author creator"]//span[@class="date"]/@data-time'
     }
@@ -39,7 +39,7 @@ class EngadgetSpider(CrawlSpider):
             item = GrepItem()
             item['url'] = self.response.url
             item['title'] = self.getxPath(self.xpaths['title'])[0]
-            # item['image'] = self.getxPath(self.xpaths['image'])[0]
+            item['image'] = self.getxPath(self.xpaths['image'])[0]
             # item['time'] = self.getxPath(self.xpaths['time'])[0]
             item['content'] = self.getxPath(self.xpaths['content'])[0]
 
