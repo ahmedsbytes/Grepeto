@@ -24,7 +24,7 @@ class ArstechnicaSpider(CrawlSpider):
         Rule(LinkExtractor(allow=('/[\-0-9a-zA-Z]+/\d+/\d+/[\-0-9a-zA-Z]+/$'), unique=True),
              callback='parse_article'),
         # # rules to allow categories only
-        Rule(LinkExtractor(allow=('/[\-0-9a-zA-Z]+$/'), unique=True))
+        Rule(LinkExtractor(allow=('[\-0-9a-zA-Z]+(\/page\/\d+)?\/?$/'), unique=True))
     )
 
 
@@ -47,8 +47,8 @@ class ArstechnicaSpider(CrawlSpider):
             item = GrepItem()
             item['url'] = self.response.url
             item['title'] = self.getxPath(self.xpaths['title'])[0]
-            item['image'] = self.getxPath(self.xpaths['image'])[0]
-            #item['time'] = self.getxPath(self.xpaths['time'])[0]
+            item['image'] = self.getImage()
+            item['time'] = self.getxPath(self.xpaths['time'])[0]
             content = ''
             for singleContent in self.getxPath(self.xpaths['content']):
                 content += singleContent
@@ -56,7 +56,12 @@ class ArstechnicaSpider(CrawlSpider):
             return [item]
         except Exception, e:
             traceback.print_exc(file=sys.stderr)
-            self.log(" Url failed ", logging.ERROR)
+            self.log(" Url "+self.response.url+" failed ", logging.ERROR)
 
+    def getImage(self):
+        Images =  self.getxPath(self.xpaths['image'])
+        if (len(Images) <1 ):
+            return ''
+        return Images[0]
     def getxPath(self, selectXpath):
         return self.response.xpath(selectXpath).extract()
