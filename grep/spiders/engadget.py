@@ -19,7 +19,7 @@ class EngadgetSpider(CrawlSpider):
 
     rules = (
         # # Rules should allow only pages will be craweled
-        Rule(LinkExtractor(allow=('/\d+/\d+/\d+/[\-0-9a-zA-Z]+/'), unique=True),
+        Rule(LinkExtractor(allow=('\d+/\d+/\d+/[\-0-9a-zA-Z]+$'), unique=True),
              callback='parse_article'),
         # # rules to allow categories only
         Rule(LinkExtractor(allow=('/(topics\/)?[\-0-9a-zA-Z]+(\/page\/\d+)?\/?/'), unique=True))
