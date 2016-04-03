@@ -24,7 +24,7 @@ class ThenextwebSpider(CrawlSpider):
         Rule(LinkExtractor(allow=('[\-0-9a-zA-Z]+/\d+/\d+/\d+/[\-0-9a-zA-Z]+/?$'), unique=True),
              callback='parse_article'),
         # # rules to allow categories only
-        Rule(LinkExtractor(allow=('/section/[\-0-9a-zA-Z]+$/'), unique=True))
+        Rule(LinkExtractor(allow=('section/[\-0-9a-zA-Z]+$'), unique=True))
     )
 
 
@@ -62,7 +62,7 @@ class ThenextwebSpider(CrawlSpider):
             return [item]
         except Exception, e:
             traceback.print_exc(file=sys.stderr)
-            self.log(" Url failed ", logging.ERROR)
+            self.log(" Url " + self.response.url + " failed ", logging.ERROR)
 
     def getxPath(self, selectXpath):
         return self.response.xpath(selectXpath).extract()
