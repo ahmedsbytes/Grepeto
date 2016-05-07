@@ -1,22 +1,20 @@
-# -*- coding: utf-8 -*-
 import time
-import dateutil.parser as dateparser
 from HTMLParser import HTMLParser
+import dateutil.parser as dateparser
 
-
-# Define your item pipelines here
-#
-# Don't forget to add your pipeline to the ITEM_PIPELINES setting
-# See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
 
 class MLStripper(HTMLParser):
     def __init__(self):
         self.reset()
         self.fed = []
+
     def handle_data(self, d):
         self.fed.append(d)
+
     def get_data(self):
         return ''.join(self.fed)
+
+
 def strip_tags(html):
     s = MLStripper()
     s.feed(html)

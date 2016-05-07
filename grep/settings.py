@@ -62,8 +62,10 @@ NEWSPIDER_MODULE = 'grep.spiders'
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-    'grep.pipelines.CleanerPipeline': 2,
-    'grep.mongopipeline.MongoPipeline': 3,
+    'grep.pipelines.htmlcleaner.CleanerPipeline': 1,
+    'grep.pipelines.slugifier.SlugifierPipeline': 2,
+    'grep.pipelines.grepsummarizer.GrepSummarizer': 5,
+    'grep.pipelines.mongo.MongoPipeline': 10,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
