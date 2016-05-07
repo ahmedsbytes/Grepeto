@@ -1,9 +1,5 @@
 from __future__ import absolute_import
 from __future__ import division, print_function, unicode_literals
-import sys
-import nltk
-import os
-from sumy.parsers.html import HtmlParser
 from sumy.parsers.plaintext import PlaintextParser
 from sumy.nlp.tokenizers import Tokenizer
 from sumy.summarizers.kl import KLSummarizer as Summarizer
