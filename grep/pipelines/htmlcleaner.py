@@ -28,4 +28,5 @@ class CleanerPipeline(object):
             item['time'] = int(time.mktime(dt.timetuple()))
 
         item['content'] = strip_tags(item['content'])
+        item['category'] = strip_tags(item['category'])
         return item

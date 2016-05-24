@@ -18,4 +18,5 @@ class GrepItem(scrapy.Item):
     image = scrapy.Field()
     content = scrapy.Field()
     summary = scrapy.Field()
+    category = scrapy.Field()
     pass

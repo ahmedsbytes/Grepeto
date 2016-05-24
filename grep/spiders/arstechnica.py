@@ -21,7 +21,7 @@ class ArstechnicaSpider(CrawlSpider):
 
     rules = (
         # # Rules should allow only pages will be craweled
-        Rule(LinkExtractor(allow=('[\-0-9a-zA-Z]+/\d+/\d+/[\-0-9a-zA-Z]+/?$'), unique=True),
+        Rule(LinkExtractor(allow=('[\-0-9a-zA-Z]+/\d+/\d+/[\-0-9a-zA-Z]+/?'), unique=True),
              callback='parse_article'),
         # # rules to allow categories only
         Rule(LinkExtractor(allow=('[\-0-9a-zA-Z]+(\/page\/\d+)?\/?'), unique=True))
@@ -35,6 +35,7 @@ class ArstechnicaSpider(CrawlSpider):
         'title': '//h1[@itemprop="headline"]//text()',
         'image': '//div[@itemprop="articleBody"]//figure[contains(@class,"intro-image")]//img/@src',
         'content': '//div[@itemprop="articleBody"]//p/text()',
+        'category' : '//h1[@id="archive-head"]//span',
         'time': '//p[@itemprop="author creator"]//span[@class="date"]/@data-time'
     }
 
@@ -49,12 +50,17 @@ class ArstechnicaSpider(CrawlSpider):
             item['title'] = self.getxPath(self.xpaths['title'])[0]
             item['image'] = self.getImage()
             item['time'] = self.getxPath(self.xpaths['time'])[0]
+            item['category'] = ''
+            cats = self.getxPath(self.xpaths['category'])
+            for category in cats:
+                item['category'] += category
+
             content = ''
             for singleContent in self.getxPath(self.xpaths['content']):
                 content += singleContent
             item['content'] = content
             return [item]
-        except Exception, e:
+        except Exception as e:
             traceback.print_exc(file=sys.stderr)
             self.log(" Url "+self.response.url+" failed ", logging.ERROR)
 
