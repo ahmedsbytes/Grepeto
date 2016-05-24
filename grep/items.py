@@ -19,4 +19,5 @@ class GrepItem(scrapy.Item):
     content = scrapy.Field()
     summary = scrapy.Field()
     category = scrapy.Field()
+    categoryId = scrapy.Field()
     pass
