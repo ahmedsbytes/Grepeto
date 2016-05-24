@@ -1,3 +1,6 @@
+#To Install ENV
+pip install pymongo slugify HTMLParser
+
 #to run spiers
 scrapy crawl arstechnica
 
