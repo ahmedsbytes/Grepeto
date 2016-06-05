@@ -12,6 +12,7 @@ class GrepItem(scrapy.Item):
     # define the fields for your item here like:
     _id = scrapy.Field()
     title = scrapy.Field()
+    sub_title = scrapy.Field()
     author = scrapy.Field()
     slug = scrapy.Field()
     url = scrapy.Field()
