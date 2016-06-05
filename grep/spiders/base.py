@@ -66,7 +66,7 @@ class BaseSpider(CrawlSpider):
     def getImage(self):
         returnImages = set()
         for imagePaths in self.xpaths['image']:
-            images = self.getxPath(self.xpaths['image'][0])
+            images = self.getxPath(imagePaths)
             for image in images:
                 returnImages.add(image)
         return list(returnImages)
