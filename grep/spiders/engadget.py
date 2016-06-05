@@ -43,7 +43,7 @@ class EngadgetSpider(CrawlSpider):
             item['title'] = self.getxPath(self.xpaths['title'])[0]
             item['image'] = self.getImage()
             item['time'] = self.getTime()
-            item['content'] = self.getxPath(self.xpaths['content'])[0]
+            item['raw_content'] = item['content'] = self.getxPath(self.xpaths['content'])[0]
 
             return [item]
         except Exception, e:

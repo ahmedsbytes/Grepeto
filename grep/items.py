@@ -17,6 +17,7 @@ class GrepItem(scrapy.Item):
     time = scrapy.Field()
     image = scrapy.Field()
     content = scrapy.Field()
+    raw_content = scrapy.Field()
     summary = scrapy.Field()
     category = scrapy.Field()
     categoryId = scrapy.Field()

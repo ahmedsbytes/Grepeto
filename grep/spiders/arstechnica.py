@@ -58,7 +58,7 @@ class ArstechnicaSpider(CrawlSpider):
             content = ''
             for singleContent in self.getxPath(self.xpaths['content']):
                 content += singleContent
-            item['content'] = content
+            item['raw_content'] = item['content'] = content
             return [item]
         except Exception as e:
             traceback.print_exc(file=sys.stderr)
