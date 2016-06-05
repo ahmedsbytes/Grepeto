@@ -14,6 +14,7 @@ class BaseSpider(CrawlSpider):
     rules = ()
     xpaths = {
         'title': '',
+        'author': '',
         'image': [
             '',
             ''
@@ -35,6 +36,7 @@ class BaseSpider(CrawlSpider):
             item = GrepItem()
             item['url'] = self.response.url
             item['title'] = self.getTitle()
+            item['author'] = self.getAuthor()
             item['image'] = self.getImage()
             item['time'] = self.getTime()
             item['category'] = self.getCats()
@@ -43,6 +45,9 @@ class BaseSpider(CrawlSpider):
         except Exception as e:
             traceback.print_exc(file=sys.stderr)
             self.log(" Url " + self.response.url + " failed ", logging.ERROR)
+
+    def getAuthor(self):
+        return self.getxPath(self.xpaths['title'])[0]
 
     def getTitle(self):
         return self.getxPath(self.xpaths['title'])[0]

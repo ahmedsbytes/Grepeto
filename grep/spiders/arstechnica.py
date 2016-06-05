@@ -21,6 +21,7 @@ class ArstechnicaSpider(BaseSpider):
 
     xpaths = {
         'title': '//h1[@itemprop="headline"]//text()',
+        'author': '//span[@itemprop="name"]//text()',
         'image': [
             '//div[@itemprop="articleBody"]//figure[contains(@class,"intro-image")]//img/@src',
             '//div[@itemprop="articleBody"]//figure[contains(@class,"image")]//img/@src'
