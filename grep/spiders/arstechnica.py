@@ -15,7 +15,7 @@ class ArstechnicaSpider(BaseSpider):
         Rule(LinkExtractor(allow=('http://arstechnica.com/([^/\.]+)/\d+/\d+/([^/\.]+)/?$'), unique=True),
              callback='parse_article'),
         # # rules to allow categories only
-        Rule(LinkExtractor(allow=('http://arstechnica.com/([^/\.]+)+(/page/\d+)?/?$'), unique=True))
+        Rule(LinkExtractor(allow=('http://arstechnica.com/([^/\.]+)(/page/\d+)?/?$'), unique=True)),
     )
 
 
