@@ -14,7 +14,7 @@ class BaseSpider(CrawlSpider):
     rules = ()
     xpaths = {
         'title': '',
-        'sub_title' : '',
+        'sub_title': '',
         'author': '',
         'image': [
             '',
@@ -25,10 +25,15 @@ class BaseSpider(CrawlSpider):
         'time': ''
     }
 
-
     response = None
 
-    def __init__(self, *a, **kw):
+    def __init__(self, allowDeep=True, *a, **kw):
+        if not allowDeep:
+            newRules = []
+            for rule in self.rules:
+                if rule.callback is not None:
+                    newRules.append(rule)
+            self.rules = tuple(newRules)
         super(BaseSpider, self).__init__(*a, **kw)
 
     def parse_article(self, response):
