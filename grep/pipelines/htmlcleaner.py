@@ -1,6 +1,7 @@
 import time
 from HTMLParser import HTMLParser
 import dateutil.parser as dateparser
+import dateparser as dateparser2
 
 
 class MLStripper(HTMLParser):
@@ -24,8 +25,12 @@ def strip_tags(html):
 class CleanerPipeline(object):
     def process_item(self, item, spider):
         if not item['time'].isdigit():
-            dt = dateparser.parse(item['time'])
-            item['time'] = int(time.mktime(dt.timetuple()))
+            try:
+                dt = dateparser.parse(item['time'])
+                item['time'] = int(time.mktime(dt.timetuple()))
+            except ValueError:
+                dt = dateparser2.parse(item['time'])
+                item['time'] = int(time.mktime(dt.timetuple()))
 
         item['content'] = strip_tags(item['content'])
         item['category'] = strip_tags(item['category'])
