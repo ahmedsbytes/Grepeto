@@ -63,7 +63,8 @@ NEWSPIDER_MODULE = 'grep.spiders'
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
     'grep.pipelines.htmlcleaner.CleanerPipeline': 1,
-    'grep.pipelines.slugifier.SlugifierPipeline': 2,
+    'grep.pipelines.timecleaner.DateCleanerPipeline': 2,
+    'grep.pipelines.slugifier.SlugifierPipeline': 4,
     'grep.pipelines.grepsummarizer.GrepSummarizer': 5,
     'grep.pipelines.mongo.MongoPipeline': 10,
 }

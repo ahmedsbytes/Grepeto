@@ -17,7 +17,6 @@ class BaseSpider(CrawlSpider):
         'sub_title': '',
         'author': '',
         'image': [
-            '',
             ''
         ],
         'content': '',
