@@ -14,13 +14,13 @@ class BaseSpider(CrawlSpider):
     rules = ()
     xpaths = {
         'title': '',
-        'sub_title': '',
-        'author': '',
         'image': [
             ''
         ],
         'content': '',
         'category': '',
+        'sub_title': '',
+        'author': '',
         'time': ''
     }
 
