@@ -11,19 +11,19 @@ class EngadgetSpider(BaseSpider):
     name = "engadget"
     allowed_domains = ["engadget.com"]
     start_urls = (
-        'http://www.engadget.com/',
+        'https://www.engadget.com/',
     )
 
     rules = (
         # # Rules should allow only pages will be craweled
-        Rule(LinkExtractor(allow=('http://www.engadget.com/\d+/\d+/\d+/[\-0-9a-zA-Z]+/?$'), unique=True),
+        Rule(LinkExtractor(allow=('https://www.engadget.com/\d+/\d+/\d+/[\-0-9a-zA-Z]+/?$'), unique=True),
              callback='parse_article'),
         # rules to allow categories only
-        Rule(LinkExtractor(allow=('http://www.engadget.com/(topics/)?[\-0-9a-zA-Z]+(/page/\d+)?/?$'), unique=True)),
+        Rule(LinkExtractor(allow=('https://www.engadget.com/(topics/)?[\-0-9a-zA-Z]+(/page/\d+)?/?$'), unique=True)),
     )
 
     xpaths = {
-        'title': '//header/div//h1/text()',
+        'title': '//article/header/div/div/div[2]/h1/text()',
         'sub_title': '//header/div//h2/text()',
         'author': '//header//section//div[@class="t-meta-small@s t-meta@m+"]/a//text()',
         'image': [

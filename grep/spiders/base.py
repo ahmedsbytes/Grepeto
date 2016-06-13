@@ -53,7 +53,11 @@ class BaseSpider(CrawlSpider):
             self.log(" Url " + self.response.url + " failed ", logging.ERROR)
 
     def getSubTitle(self):
-        return self.getxPath(self.xpaths['sub_title'])[0]
+        subtitleSelector = self.getxPath(self.xpaths['sub_title'])
+        if subtitleSelector:
+            return subtitleSelector[0]
+        else:
+            return ''
 
     def getAuthor(self):
         return self.getxPath(self.xpaths['author'])[0]
