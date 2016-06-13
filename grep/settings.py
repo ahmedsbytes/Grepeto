@@ -1,5 +1,16 @@
 # -*- coding: utf-8 -*-
 
+DB = {
+    'connection': {
+      'db': 'project_grep'
+    },
+    'collection': {
+        'categories':  'categories',
+        'articles':  'crawled_articles',
+        'increment': 'doctrine_increment_ids'
+    }
+}
+
 # Scrapy settings for grep project
 #
 # For simplicity, this file contains only settings considered important or
@@ -62,11 +73,17 @@ TELNETCONSOLE_ENABLED=False
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
+    # processing data
     'grep.pipelines.htmlcleaner.CleanerPipeline': 1,
     'grep.pipelines.timecleaner.DateCleanerPipeline': 2,
-    'grep.pipelines.slugifier.SlugifierPipeline': 4,
+    'grep.pipelines.slugifier.SlugifierPipeline': 3,
+    'grep.pipelines.imageprefixer.ImagePrefixerPipeline': 4,
     'grep.pipelines.grepsummarizer.GrepSummarizer': 5,
-    'grep.pipelines.imageprefixer.ImagePrefixerPipeline' : 6,
+
+    # verification
+    'grep.pipelines.verifier.DataVerifierPipeline': 49,
+
+    # Storing
     'grep.pipelines.mongo.MongoPipeline': 100,
 }
 

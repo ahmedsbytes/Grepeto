@@ -1,6 +1,7 @@
 __author__ = 'ahmed'
 import pymongo
 from slugify import slugify
+from grep.settings import DB
 
 
 class MongoPipeline(object):
@@ -8,13 +9,13 @@ class MongoPipeline(object):
 
     def __init__(self):
         client = pymongo.MongoClient()
-        db = client['project_grep']
-        self.collection = db['crawled_articles']
-        self.auto_increment = db['doctrine_increment_ids']
-        self.categories = db['categories']
+        db = client[DB['connection']['db']]
+        self.collection = db[DB['collection']['articles']]
+        self.auto_increment = db[DB['collection']['increment']]
+        self.categories = db[DB['collection']['categories']]
         pass
 
-    def get_new_increment(self, collection='GeneratedContent'):
+    def get_new_increment(self, collection):
         return int(self.auto_increment.find_and_modify(
             query={'_id': collection},
             update={'$inc': {'current_id': 1}},
@@ -28,6 +29,7 @@ class MongoPipeline(object):
 
     def add_category(self, catName):
         catDict = {
+            '_id': self.get_new_increment(DB['collection']['categories']),
             'parentId': 0,
             'active': 1,
             'name': catName,
@@ -43,7 +45,7 @@ class MongoPipeline(object):
 
         old_item = self.get_existing_item(item)
         if old_item is None:
-            item['_id'] = self.get_new_increment()
+            item['_id'] = self.get_new_increment(DB['collection']['articles'])
             self.collection.insert(dict(item))
         else:
             item['_id'] = old_item.get('_id')
