@@ -36,8 +36,7 @@ class MongoPipeline(object):
                 'name': catName,
                 'slug': slugify(catName)
             }
-            self.categories.update({'name': catName},
-                                   {'$set': dict(cat)}, upsert=True)
+            self.categories.insert(dict(cat))
         return cat['_id']
 
     def getArticleId(self, url):
