@@ -64,9 +64,9 @@ class MongoPipeline(object):
         return website['_id']
 
     def process_item(self, item, spider):
-        item['_id'] = self.getArticleId(item['url'])
+        item_id = self.getArticleId(item['url'])
         item['categoryId'] = self.getCategoryId(item['category'])
         item['websiteId'] = self.getWebsiteId(item)
-        self.collection.update({'_id': item['_id']},
+        self.collection.update({'_id': item_id},
                                {'$set': dict(item)}, upsert=True)
         return item
