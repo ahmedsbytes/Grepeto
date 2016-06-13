@@ -56,7 +56,7 @@ class BaseSpider(CrawlSpider):
         return self.getxPath(self.xpaths['sub_title'])[0]
 
     def getAuthor(self):
-        return self.getxPath(self.xpaths['title'])[0]
+        return self.getxPath(self.xpaths['author'])[0]
 
     def getTitle(self):
         return self.getxPath(self.xpaths['title'])[0]

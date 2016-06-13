@@ -22,10 +22,11 @@ class ArstechnicaSpider(BaseSpider):
     xpaths = {
         'title': '//h1[@itemprop="headline"]//text()',
         'sub_title': '//h2[@itemprop="description"]//text()',
-        'author': '//span[@itemprop="name"]//text()',
+        'author': '//a[@rel="author"]/span[@itemprop="name"]//text()',
         'image': [
             '//div[@itemprop="articleBody"]//figure[contains(@class,"intro-image")]//img/@src',
-            '//div[@itemprop="articleBody"]//figure[contains(@class,"image")]//img/@src'
+            '//div[@itemprop="articleBody"]//figure[contains(@class,"image")]//img/@src',
+            '//*[@class="gallery-thumbs"]/li/a/@data-orig'
         ],
         'content': '//div[@itemprop="articleBody"]//p/text()',
         'category' : '//h1[@id="archive-head"]//span',
