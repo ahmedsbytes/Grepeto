@@ -24,7 +24,8 @@ class IclarifiedSpider(BaseSpider):
         'sub_title': '//h1/text()',
         'author': '//span[@itemprop="name"]//text()',
         'image': [
-            '//img[@width="640"]//@src'
+            '//img[@width="640"]//@src',
+            '//div[@id="article_body_column_center"]/a/img//@src'
         ],
         'content': '//div[@id="article_body_column_center"]/text()',
         'category': '',

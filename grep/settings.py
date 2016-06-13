@@ -66,7 +66,8 @@ ITEM_PIPELINES = {
     'grep.pipelines.timecleaner.DateCleanerPipeline': 2,
     'grep.pipelines.slugifier.SlugifierPipeline': 4,
     'grep.pipelines.grepsummarizer.GrepSummarizer': 5,
-    'grep.pipelines.mongo.MongoPipeline': 10,
+    'grep.pipelines.imageprefixer.ImagePrefixerPipeline' : 6,
+    'grep.pipelines.mongo.MongoPipeline': 100,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
