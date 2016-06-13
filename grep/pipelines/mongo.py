@@ -36,7 +36,7 @@ class MongoPipeline(object):
                 'name': catName,
                 'slug': slugify(catName)
             }
-            self.categories.insert(dict(cat))
+            self.categories.insert(cat)
         return cat['_id']
 
     def getArticleId(self, url):
@@ -60,7 +60,7 @@ class MongoPipeline(object):
                 'description': '',
                 'name': ''
             }
-            self.websites.insert(dict(website))
+            self.websites.insert(website)
         return website['_id']
 
     def process_item(self, item, spider):
