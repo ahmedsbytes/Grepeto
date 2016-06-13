@@ -1,5 +1,6 @@
 __author__ = 'ahmed'
 import pymongo
+import urlparse
 from slugify import slugify
 from grep.settings import DB
 
@@ -13,6 +14,7 @@ class MongoPipeline(object):
         self.collection = db[DB['collection']['articles']]
         self.auto_increment = db[DB['collection']['increment']]
         self.categories = db[DB['collection']['categories']]
+        self.websites = db[DB['collection']['websites']]
         pass
 
     def get_new_increment(self, collection):
@@ -24,31 +26,48 @@ class MongoPipeline(object):
             upsert=True
         ).get('current_id'))
 
-    def get_existing_item(self, item):
-        return self.collection.find_one({'url': item['url']})
+    def getCategoryId(self, catName):
+        cat = self.categories.find_one({'name': catName})
+        if not cat:
+            cat = {
+                '_id': self.get_new_increment(DB['collection']['categories']),
+                'parentId': 0,
+                'active': 1,
+                'name': catName,
+                'slug': slugify(catName)
+            }
+            self.categories.update({'name': catName},
+                                   {'$set': dict(cat)}, upsert=True)
+        return cat['_id']
 
-    def add_category(self, catName):
-        catDict = {
-            '_id': self.get_new_increment(DB['collection']['categories']),
-            'parentId': 0,
-            'active': 1,
-            'name': catName,
-            'slug': slugify(catName)
-        }
-        return self.categories.update({'name': catName},
-                               {'$set': dict(catDict)}, upsert=True)
+    def getArticleId(self, url):
+        old_item = self.collection.find_one({'url': url})
+        if old_item is None:
+            return self.get_new_increment(DB['collection']['articles'])
+        else:
+            return old_item.get('_id')
+
+    def getWebsiteId(self, item):
+        url_parts = urlparse.urlparse(item['url'])
+        domain = url_parts[1]
+        website = self.websites.find_one({'domain': domain})
+        if not website:
+            website_link = url_parts[0] + '://' + url_parts[1]
+            website = {
+                '_id': self.get_new_increment(DB['collection']['websites']),
+                'domain': domain,
+                'url': website_link,
+                'icon': '',
+                'description': '',
+                'name': ''
+            }
+            self.websites.insert(dict(website))
+        return website['_id']
 
     def process_item(self, item, spider):
-        self.add_category(item['category'])
-        cat = self.categories.find_one({'name': item['category']})
-        item['categoryId'] = cat['_id']
-
-        old_item = self.get_existing_item(item)
-        if old_item is None:
-            item['_id'] = self.get_new_increment(DB['collection']['articles'])
-            self.collection.insert(dict(item))
-        else:
-            item['_id'] = old_item.get('_id')
-            self.collection.update({'_id': old_item.get('_id')},
-                                   {'$set': dict(item)}, upsert=True)
+        item['_id'] = self.getArticleId(item['url'])
+        item['categoryId'] = self.getCategoryId(item['category'])
+        item['websiteId'] = self.getWebsiteId(item)
+        self.collection.update({'_id': item['_id']},
+                               {'$set': dict(item)}, upsert=True)
         return item

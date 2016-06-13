@@ -5,6 +5,7 @@ DB = {
       'db': 'project_grep'
     },
     'collection': {
+        'websites':  'websites',
         'categories':  'categories',
         'articles':  'crawled_articles',
         'increment': 'doctrine_increment_ids'

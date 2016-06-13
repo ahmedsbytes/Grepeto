@@ -23,4 +23,5 @@ class GrepItem(scrapy.Item):
     summary = scrapy.Field()
     category = scrapy.Field()
     categoryId = scrapy.Field()
+    websiteId =  scrapy.Field()
     pass
