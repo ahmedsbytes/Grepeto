@@ -14,7 +14,6 @@ class MongoPipeline(object):
         db = client[DB['connection']['db']]
         self.collection = db[DB['collection']['articles']]
         self.auto_increment = db[DB['collection']['increment']]
-        self.categories = db[DB['collection']['categories']]
         self.original_categories = db[DB['collection']['original_categories']]
         self.websites = db[DB['collection']['websites']]
         pass
@@ -31,7 +30,14 @@ class MongoPipeline(object):
     def getCategory(self, catName, domain):
         original_cat = self.original_categories.find_one({'name': catName, 'domain': domain})
         if not original_cat:
-            raise Exception('can not find articles category ['+catName+']')
+            original_cat = {
+                '_id': self.get_new_increment(DB['collection']['original_categories']),
+                'name': catName,
+                'domain': domain,
+                'url': '',
+                'categoryId': 0
+            }
+            self.original_categories.insert(original_cat)
         if not original_cat['categoryId']:
             raise Exception('category not mapped yet [' + catName + ']')
         return original_cat
