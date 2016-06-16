@@ -7,6 +7,7 @@ DB = {
     'collection': {
         'websites':  'websites',
         'categories':  'categories',
+        'original_categories':  'original_categories',
         'articles':  'crawled_articles',
         'increment': 'doctrine_increment_ids'
     }
