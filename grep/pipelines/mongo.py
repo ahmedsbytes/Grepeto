@@ -26,18 +26,26 @@ class MongoPipeline(object):
             upsert=True
         ).get('current_id'))
 
-    def getCategoryId(self, catName):
-        cat = self.categories.find_one({'name': catName})
+    def getCategory(self, catName, domain):
+        cat = self.categories.find_one({'original.name': catName, 'domain': domain},
+                                       {'original':
+                                           {
+                                               '$elemMatch': {'name': catName}
+                                           }
+                                       })
         if not cat:
-            cat = {
-                '_id': self.get_new_increment(DB['collection']['categories']),
-                'parentId': 0,
-                'active': 1,
-                'name': catName,
-                'slug': slugify(catName)
-            }
-            self.categories.insert(cat)
-        return cat['_id']
+            raise Exception('can not find articles category ['+catName+']')
+        # print cat
+        # if not cat:
+        #     cat = {
+        #         '_id': self.get_new_increment(DB['collection']['categories']),
+        #         'parentId': 0,
+        #         'active': 1,
+        #         'name': catName,
+        #         'slug': slugify(catName)
+        #     }
+        #     self.categories.insert(cat)
+        return cat
 
     def getArticleId(self, url):
         old_item = self.collection.find_one({'url': url})
@@ -46,7 +54,7 @@ class MongoPipeline(object):
         else:
             return old_item.get('_id')
 
-    def getWebsiteId(self, item):
+    def getWebsite(self, item):
         url_parts = urlparse.urlparse(item['url'])
         domain = url_parts[1]
         website = self.websites.find_one({'domain': domain})
@@ -61,12 +69,15 @@ class MongoPipeline(object):
                 'name': ''
             }
             self.websites.insert(website)
-        return website['_id']
+        return website
 
     def process_item(self, item, spider):
         item_id = self.getArticleId(item['url'])
-        item['categoryId'] = self.getCategoryId(item['category'])
-        item['websiteId'] = self.getWebsiteId(item)
+        website = self.getWebsite(item)
+        cat = self.getCategory(item['category'], website['domain'])
+        item['categoryId'] = cat['_id']
+        item['originalCategoryId'] = cat['original']['_id']
+        item['websiteId'] = website['_id']
         self.collection.update({'_id': item_id},
                                {'$set': dict(item)}, upsert=True)
         return item
