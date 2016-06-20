@@ -70,7 +70,7 @@ class MongoPipeline(object):
         item_id = self.getArticleId(item['url'])
         website = self.getWebsite(item)
         original_category = self.getCategory(item['category'], website['domain'])
-        item['categoryId'] = original_category['categoryId']
+        item['categoryId'] = original_category['category'].id
         item['originalCategoryId'] = original_category['_id']
         item['websiteId'] = website['_id']
         self.collection.update({'_id': item_id},
