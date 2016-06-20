@@ -3,6 +3,7 @@ import pymongo
 import urlparse
 from slugify import slugify
 from grep.settings import DB
+import logging
 
 
 class MongoPipeline(object):
@@ -39,7 +40,7 @@ class MongoPipeline(object):
             }
             self.original_categories.insert(original_cat)
         if not original_cat['categoryId']:
-            raise Exception('category not mapped yet [' + catName + ']')
+            logging.warning('category not mapped yet [' + catName + ']')
         return original_cat
 
     def getArticleId(self, url):
@@ -70,7 +71,8 @@ class MongoPipeline(object):
         item_id = self.getArticleId(item['url'])
         website = self.getWebsite(item)
         original_category = self.getCategory(item['category'], website['domain'])
-        item['categoryId'] = original_category['category'].id
+        if 'category' in original_category:
+            item['categoryId'] = original_category['category'].id
         item['originalCategoryId'] = original_category['_id']
         item['websiteId'] = website['_id']
         self.collection.update({'_id': item_id},
