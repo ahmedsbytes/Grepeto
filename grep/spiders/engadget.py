@@ -27,7 +27,7 @@ class EngadgetSpider(BaseSpider):
         'sub_title': '//header/div//h2/text()',
         'author': '//header//section//div[@class="t-meta-small@s t-meta@m+"]/a//text()',
         'image': [
-            '//*[@id="page_body"]/div/div/div[1]/div[1]/div/img'
+            '//*[@id="page_body"]/div/div/div//div/div//img'
         ],
         'content': '//div[@id="page_body"]//div',
         'category': '//header/div//div[@class="th-meta"]/a[@class="th-topic"]/text()',
