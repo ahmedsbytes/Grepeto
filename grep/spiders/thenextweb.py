@@ -1,18 +1,11 @@
 __author__ = 'ahmed'
-import traceback
-import sys
-import scrapy
-import logging
-from grep.items import GrepItem
 from scrapy.linkextractors import LinkExtractor
-from scrapy.spiders import CrawlSpider, Rule
+from scrapy.spiders import Rule
+from base import BaseSpider
+import logging
 
 
-class ThenextwebSpider(CrawlSpider):
-
-    #####################
-    # # scrappy own vars
-    ######################
+class ThenextwebSpider(BaseSpider):
     name = "thenextweb"
     allowed_domains = ["thenextweb.com"]
     start_urls = (
@@ -27,42 +20,34 @@ class ThenextwebSpider(CrawlSpider):
         Rule(LinkExtractor(allow=('section/[\-0-9a-zA-Z]+$'), unique=True))
     )
 
-
-    #######################
-    # # my own variables
-    #######################
     xpaths = {
         'title': '//article/header/h1//text()',
-        'image': '//div[@class="lazy post-featuredImage-image"]//@data-src-set',
+        'image': [
+            '//*[contains(@class,"post-featuredImage")]//img/@data-srcset',
+            '//*[contains(@class,"post-image")]//img/@data-srcset'
+        ],
         'content': '//article/div[contains(@class,"post-body")]/p//text()',
+        'category': '//a[contains(@class,"post-section")]//text()',
+        'sub_title': '',
+        'author': '//a[contains(@class,"post-authorName")]//text()',
         'time': '//header//time[contains(@class,"timeago")]//@datetime'
     }
 
     response = None
 
-    def parse_article(self, response):
-        self.response = response
-
-        try:
-            item = GrepItem()
-            item['url'] = self.response.url
-            item['title'] = self.getxPath(self.xpaths['title'])[0]
-            lastImageSize = 0
-            for imageCollection in self.getxPath(self.xpaths['image'])[0].split(','):
+    def getImage(self):
+        foundSets = super(ThenextwebSpider, self).getImage()
+        if not foundSets:
+            return foundSets
+        returnImages = set()
+        for imageSet in foundSets:
+            ImagePath = ''
+            for imageCollection in imageSet.split(','):
+                lastImageSize = 0
                 imageDesc = imageCollection.split(' ')
                 if lastImageSize < imageDesc[1]:
                     lastImageSize = imageDesc[1]
-                    item['image'] = imageDesc[1]
-
-            item['time'] = self.getxPath(self.xpaths['time'])[0]
-            content = ''
-            for singleContent in self.getxPath(self.xpaths['content']):
-                content += singleContent
-            item['raw_content'] = item['content'] = content
-            return [item]
-        except Exception, e:
-            traceback.print_exc(file=sys.stderr)
-            self.log(" Url " + self.response.url + " failed ", logging.ERROR)
-
-    def getxPath(self, selectXpath):
-        return self.response.xpath(selectXpath).extract()
+                    ImagePath = imageDesc[1]
+            if ImagePath:
+                returnImages.add(ImagePath)
+        return list(returnImages)

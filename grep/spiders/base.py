@@ -54,11 +54,11 @@ class BaseSpider(CrawlSpider):
             self.log(" Url " + self.response.url + " failed ", logging.ERROR)
 
     def getSubTitle(self):
-        subtitleSelector = self.getxPath(self.xpaths['sub_title'])
-        if subtitleSelector:
-            return subtitleSelector[0]
-        else:
-            return ''
+        if self.xpaths['sub_title']:
+            subtitleSelector = self.getxPath(self.xpaths['sub_title'])
+            if subtitleSelector:
+                return subtitleSelector[0]
+        return ''
 
     def getAuthor(self):
         return self.getxPath(self.xpaths['author'])[0]
@@ -86,6 +86,7 @@ class BaseSpider(CrawlSpider):
         returnImages = set()
         for imagePaths in self.xpaths['image']:
             images = self.getxPath(imagePaths)
+            logging.warning(images)
             for image in images:
                 returnImages.add(image)
         return list(returnImages)
