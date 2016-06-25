@@ -68,6 +68,7 @@ class MongoPipeline(object):
         return website
 
     def process_item(self, item, spider):
+        item['category'] = item['category'].strip()
         item_id = self.getArticleId(item['url'])
         website = self.getWebsite(item)
         original_category = self.getCategory(item['category'], website['domain'])

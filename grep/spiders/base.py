@@ -57,14 +57,14 @@ class BaseSpider(CrawlSpider):
         if self.xpaths['sub_title']:
             subtitleSelector = self.getxPath(self.xpaths['sub_title'])
             if subtitleSelector:
-                return subtitleSelector[0]
+                return subtitleSelector[0].strip()
         return ''
 
     def getAuthor(self):
-        return self.getxPath(self.xpaths['author'])[0]
+        return self.getxPath(self.xpaths['author'])[0].strip()
 
     def getTitle(self):
-        return self.getxPath(self.xpaths['title'])[0]
+        return self.getxPath(self.xpaths['title'])[0].strip()
 
     def getTime(self):
         return self.getxPath(self.xpaths['time'])[0]
@@ -80,15 +80,14 @@ class BaseSpider(CrawlSpider):
         cats = self.getxPath(self.xpaths['category'])
         for category in cats:
             returnCats += category
-        return returnCats
+        return returnCats.strip()
 
     def getImage(self):
         returnImages = set()
         for imagePaths in self.xpaths['image']:
             images = self.getxPath(imagePaths)
-            logging.warning(images)
             for image in images:
-                returnImages.add(image)
+                returnImages.add(image.strip())
         return list(returnImages)
 
     def getxPath(self, selectXpath):
