@@ -1,7 +1,7 @@
 # What is this ?
 I was just playing , trying to make scrap all tech technical blogs and websites I find 
 
-Basically , I do not do anything special , just asbtracting three classes for different data source type , then each website is extending it to just define it's sepcific marup selectors 
+Basically , I do not do anything special , just subtracting three classes for different data source type , then each website is extending it to just define its specific markup selectors
 
 # Will be any more changes ?
 Nope , but If you find it useful and wated to make use of it, open PR and I will merge it or tell me and I will give access over the repo
